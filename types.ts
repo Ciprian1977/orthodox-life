@@ -1,12 +1,14 @@
 
 export type Language = 'ro' | 'en' | 'ru' | 'el' | 'sr';
 export type CountryTradition = 'RO' | 'SRB' | 'RU' | 'GR' | 'USA';
+export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface UserProfile {
   id?: string;
   language: Language;
   countryTradition: CountryTradition;
   hasOnboarded: boolean;
+  theme: ThemeMode;
   favoritePrayerIds: string[];
   favoriteAudioIds: string[];
   settings: {
@@ -52,6 +54,7 @@ export interface Prayer {
   category: PrayerCategory;
   tags: string[];
   isFeatured?: boolean;
+  isPlaceholderOfficial?: boolean;
 }
 
 export type ArticleCategory = 'practice' | 'sacraments' | 'feasts' | 'church_conduct' | 'fasting';

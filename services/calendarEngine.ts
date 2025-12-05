@@ -37,6 +37,19 @@ export const getOrthodoxPascha = (year: number): Date => {
   return julianDate;
 };
 
+// --- HELPER: DATE CALCULATIONS ---
+
+/**
+ * Returns the number of days difference between two dates (date - baseline).
+ */
+export const getDaysDifference = (date: Date, baseline: Date): number => {
+  // Normalize to start of day to avoid DST issues
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const b = new Date(baseline.getFullYear(), baseline.getMonth(), baseline.getDate());
+  const diffTime = d.getTime() - b.getTime();
+  return Math.round(diffTime / (1000 * 60 * 60 * 24));
+};
+
 // --- 2. FIXED FEASTS DATA (RO) ---
 // Key format: "MM-DD"
 interface FixedFeastDef {
@@ -74,20 +87,91 @@ const FIXED_FEASTS_RO: Record<string, FixedFeastDef> = {
   '12-27': { name: 'Sf. Arhidiacon Ștefan', importance: 'high_feast', forceFastType: 'no_fast' },
 };
 
-// --- 3. CORE ENGINE LOGIC ---
+// --- 3. ROBUST FASTING HELPERS ---
 
-// Helper: Add days to date
-const addDays = (date: Date, days: number) => {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
+/**
+ * Checks if a date falls within Great Lent (Postul Mare).
+ * Defined as: Clean Monday (-48 days from Pascha) up to Holy Saturday (-1 day).
+ */
+export const isGreatLent = (date: Date, pascha: Date): boolean => {
+  const diff = getDaysDifference(date, pascha);
+  return diff >= -48 && diff < 0;
 };
+
+/**
+ * Checks if a date falls within the Nativity Fast (Postul Crăciunului).
+ * Fixed period: November 15 to December 24.
+ */
+export const isNativityFast = (date: Date): boolean => {
+  const month = date.getMonth(); // 0-11
+  const day = date.getDate();
+  // Nov (10) 15-30 or Dec (11) 1-24
+  if (month === 10 && day >= 15) return true;
+  if (month === 11 && day <= 24) return true;
+  return false;
+};
+
+/**
+ * Checks if a date falls within the Dormition Fast (Postul Adormirii Maicii Domnului).
+ * Fixed period: August 1 to August 14.
+ */
+export const isDormitionFast = (date: Date): boolean => {
+  const month = date.getMonth(); // 7 = Aug
+  const day = date.getDate();
+  return month === 7 && day >= 1 && day <= 14;
+};
+
+/**
+ * Checks if a date falls within the Apostles' Fast (Postul Sfinților Petru și Pavel).
+ * Start: Monday after All Saints (Pascha + 57 days).
+ * End: June 28 (Fixed).
+ */
+export const isApostlesFast = (date: Date, pascha: Date): boolean => {
+  const startFast = new Date(pascha);
+  startFast.setDate(pascha.getDate() + 57);
+
+  // Normalize current date
+  const current = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const start = new Date(startFast.getFullYear(), startFast.getMonth(), startFast.getDate());
+  
+  // End date is June 28 of current year
+  const end = new Date(date.getFullYear(), 5, 29); // June 29 is Feast, so fast is < June 29 (through 28)
+
+  return current >= start && current < end;
+};
+
+/**
+ * Checks if a date is a Harți (Fast-Free) day.
+ * 1. Christmas -> Epiphany Eve (Dec 25 - Jan 4)
+ * 2. Week after Publican & Pharisee (Pascha - 69 to -63 approx)
+ * 3. Bright Week (Pascha + 1 to + 6)
+ * 4. Trinity Week (Pascha + 50 to + 56)
+ */
+export const isHarti = (date: Date, pascha: Date): boolean => {
+  const diff = getDaysDifference(date, pascha);
+  const month = date.getMonth();
+  const day = date.getDate();
+
+  // 1. Christmas period (Dec 25 - Jan 4)
+  if ((month === 11 && day >= 25) || (month === 0 && day <= 4)) return true;
+
+  // 2. Week after Publican & Pharisee (Triodion starts -70, Sunday. Week following is fast free)
+  if (diff >= -69 && diff < -62) return true;
+
+  // 3. Bright Week (Săptămâna Luminată)
+  if (diff > 0 && diff < 7) return true;
+
+  // 4. Trinity Week (Săptămâna de după Rusalii)
+  if (diff >= 50 && diff < 57) return true;
+
+  return false;
+};
+
+
+// --- 4. CORE ENGINE GENERATION ---
 
 // Helper: Format YYYY-MM-DD
 const formatDateStr = (date: Date) => date.toISOString().split('T')[0];
-
-// Helper: Get Day of Year (0-365) - useful for fast ranges?
-// Actually simpler to just compare Date objects.
 
 export const generateCalendarDataForYear = (year: number, tradition: CountryTradition = 'RO'): CalendarDay[] => {
   if (tradition !== 'RO') {
@@ -120,7 +204,6 @@ export const generateCalendarDataForYear = (year: number, tradition: CountryTrad
       feastName = f.name;
       importance = f.importance;
     } else {
-      // Placeholder saints for normal days
       saints.push(`Saint of ${dateStr}`);
     }
 
@@ -130,48 +213,41 @@ export const generateCalendarDataForYear = (year: number, tradition: CountryTrad
     }
 
     // --- B. Identify Movable Feasts relative to Pascha ---
-    const diffTime = current.getTime() - pascha.getTime();
-    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = getDaysDifference(current, pascha);
 
     if (diffDays === -48) { feastName = 'Start of Great Lent (Clean Monday)'; isFastDay = true; fastType = 'strict_fast'; importance='high_feast'; }
-    else if (diffDays === -7) { feastName = 'Floriile (Palm Sunday)'; importance = 'high_feast'; isFastDay = true; fastType = 'fast_with_fish'; } // Fish allowed
+    else if (diffDays === -7) { feastName = 'Floriile (Palm Sunday)'; importance = 'high_feast'; isFastDay = true; fastType = 'fast_with_fish'; }
     else if (diffDays === -2) { feastName = 'Vinerea Mare (Great Friday)'; importance = 'high_feast'; isFastDay = true; fastType = 'strict_fast'; }
     else if (diffDays === -1) { feastName = 'Sâmbăta Mare'; importance = 'high_feast'; isFastDay = true; fastType = 'strict_fast'; }
     else if (diffDays === 0) { feastName = 'ÎNVIEREA DOMNULUI (PAȘTI)'; importance = 'high_feast'; isFastDay = false; fastType = 'no_fast'; }
-    else if (diffDays > 0 && diffDays < 7) { feastName = 'Săptămâna Luminată'; isFastDay = false; fastType = 'no_fast'; } // Bright week
-    else if (diffDays === 39) { feastName = 'Înălțarea Domnului'; importance = 'high_feast'; } // Always Thursday
+    else if (diffDays > 0 && diffDays < 7) { feastName = 'Săptămâna Luminată'; isFastDay = false; fastType = 'no_fast'; }
+    else if (diffDays === 39) { feastName = 'Înălțarea Domnului'; importance = 'high_feast'; }
     else if (diffDays === 49) { feastName = 'Pogorârea Sf. Duh (Rusalii)'; importance = 'high_feast'; }
     else if (diffDays === 50) { feastName = 'Sf. Treime'; importance = 'high_feast'; }
     
     // --- C. Fasting Logic ---
     
-    // 1. Great Lent (Pascha - 48 to Pascha - 1)
-    if (diffDays >= -48 && diffDays < 0) {
+    // 1. Great Lent
+    if (isGreatLent(current, pascha)) {
       isFastDay = true;
-      fastType = 'fast_without_oil'; // Default for Lent
-      
+      fastType = 'fast_without_oil';
       // Weekends in Lent (except Holy Sat) -> Wine/Oil
       if ((dayOfWeek === 0 || dayOfWeek === 6) && diffDays !== -1) {
         fastType = 'fast_with_oil';
       }
-      
-      // Override for specific movable feasts handled above (Palm Sunday etc)
-      if (diffDays === -7) fastType = 'fast_with_fish';
+      if (diffDays === -7) fastType = 'fast_with_fish'; // Palm Sunday
     }
 
-    // 2. Nativity Fast (Nov 15 - Dec 24)
-    // Simple logic:
-    // Nov 15 - Dec 17: Fish on Sat/Sun.
-    // Dec 18 - Dec 24: No Fish, Wine/Oil on Sat/Sun.
-    // Wed/Fri usually no oil unless red cross.
-    if ((current.getMonth() === 10 && current.getDate() >= 15) || (current.getMonth() === 11 && current.getDate() <= 24)) {
+    // 2. Nativity Fast
+    if (isNativityFast(current)) {
        isFastDay = true;
        fastType = 'fast_without_oil';
-       
+       // Nov 15 - Dec 17 roughly allows fish on Sat/Sun
        const isLateAdvent = (current.getMonth() === 11 && current.getDate() >= 18);
-       
-       if (dayOfWeek === 0 || dayOfWeek === 6) {
-          fastType = isLateAdvent ? 'fast_with_oil' : 'fast_with_fish';
+       if ((dayOfWeek === 0 || dayOfWeek === 6) && !isLateAdvent) {
+          fastType = 'fast_with_fish';
+       } else if ((dayOfWeek === 0 || dayOfWeek === 6)) {
+          fastType = 'fast_with_oil';
        }
        
        // Fixed Feast overrides for Fish in Advent
@@ -180,58 +256,36 @@ export const generateCalendarDataForYear = (year: number, tradition: CountryTrad
        }
     }
 
-    // 3. Dormition Fast (Aug 1 - 14)
-    if (current.getMonth() === 7 && current.getDate() >= 1 && current.getDate() <= 14) {
+    // 3. Dormition Fast
+    if (isDormitionFast(current)) {
       isFastDay = true;
       fastType = 'fast_without_oil';
       if (dayOfWeek === 0 || dayOfWeek === 6) fastType = 'fast_with_oil';
       if (mmdd === '08-06') fastType = 'fast_with_fish'; // Transfiguration
     }
 
-    // 4. Apostles Fast (Mon after All Saints -> Jun 28)
-    // All Saints is Pentecost + 7 days = Pascha + 56 days.
-    // Fast starts Pascha + 57.
-    const apostlesFastStart = 57;
-    // End date is fixed Jun 28 (Jun 29 is feast).
-    const endApostles = new Date(year, 5, 29); // June 29
-    // Current compared to Jun 29
-    // Warning: sometimes Fast can be 0 days if Pascha is very late.
-    if (diffDays >= apostlesFastStart && current < endApostles) {
+    // 4. Apostles Fast
+    if (isApostlesFast(current, pascha)) {
        isFastDay = true;
        fastType = 'fast_without_oil';
-       if (dayOfWeek === 0 || dayOfWeek === 6) fastType = 'fast_with_fish'; // Permissive fast
+       if (dayOfWeek === 0 || dayOfWeek === 6) fastType = 'fast_with_fish'; 
     }
 
-    // 5. Standard Wed/Fri Rule (Outside of major fasts handled above)
-    // Only apply if not already marked as fast (to avoid overwriting Lent logic) or explicitly non-fast
+    // 5. Standard Wed/Fri Rule
     if (!isFastDay && fastType !== 'no_fast') {
       if (dayOfWeek === 3 || dayOfWeek === 5) {
-        isFastDay = true;
-        fastType = 'fast_without_oil';
-        
-        // Check Harți (Harți days override)
-        // Christmas-Epiphany: Dec 25 - Jan 5 (No fast)
-        if (
-             (current.getMonth() === 11 && current.getDate() >= 25) || 
-             (current.getMonth() === 0 && current.getDate() <= 5)
-           ) {
+        // Check Harți
+        if (isHarti(current, pascha)) {
           isFastDay = false;
           fastType = 'no_fast';
+        } else {
+          isFastDay = true;
+          fastType = 'fast_without_oil';
         }
-        
-        // Week after Pentecost (diffDays 50-56)
-        if (diffDays >= 50 && diffDays <= 56) {
-           isFastDay = false;
-           fastType = 'no_fast';
-        }
-
-        // Publican & Pharisee (10 weeks before Pascha - week 1) -> -70 days approx
-        // Cheese fare week (Dairy allowed) -> -56 to -49
       }
     }
 
     // --- D. Final Overrides from Fixed Dictionary ---
-    // (e.g. 14 Sept is always strict fast, 29 Aug strict fast)
     if (FIXED_FEASTS_RO[mmdd]) {
       const fixed = FIXED_FEASTS_RO[mmdd];
       if (fixed.forceFastType) {
@@ -254,7 +308,7 @@ export const generateCalendarDataForYear = (year: number, tradition: CountryTrad
       isFastDay,
       fastType,
       importanceLevel: importance,
-      descriptionShort: `${importance === 'high_feast' ? 'A major feast of the Church.' : 'Daily commemoration of saints.'} ${isFastDay ? 'Fasting is prescribed.' : ''}`,
+      descriptionShort: `${importance === 'high_feast' ? 'A major feast of the Church.' : 'Daily commemoration.'} ${isFastDay ? 'Fasting is prescribed.' : ''}`,
       saints: saints.length > 0 ? saints : ['Holy Martyrs and Confessors'],
       readings: dayOfWeek === 0 ? ['Epistle: Rom. 1', 'Gospel: Matt. 1'] : undefined
     });
@@ -263,15 +317,13 @@ export const generateCalendarDataForYear = (year: number, tradition: CountryTrad
   return days;
 };
 
-// --- 4. PUBLIC API ---
+// --- 5. PUBLIC API ---
 
 export const getCalendarDay = (date: Date, tradition: CountryTradition = 'RO'): CalendarDay => {
   const year = date.getFullYear();
-  // In a real optimized app, we would cache the year data.
-  // For this demo, we generate the year and find the day.
   const yearData = generateCalendarDataForYear(year, tradition);
   const dateStr = formatDateStr(date);
-  return yearData.find(d => d.date === dateStr) || yearData[0]; // Fallback safe
+  return yearData.find(d => d.date === dateStr) || yearData[0];
 };
 
 export const getCalendarMonthData = (year: number, month: number, tradition: CountryTradition = 'RO'): CalendarDay[] => {

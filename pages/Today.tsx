@@ -1,21 +1,20 @@
+
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { useI18n } from '../contexts/I18nContext';
 import { getDayInfo, getQuoteOfDay, getPrayers } from '../services/dataService';
 import { CalendarDay, Prayer, FastType } from '../types';
-import { I18N } from '../constants';
 import { Fish, Droplet, XCircle, CheckCircle, ChevronRight, Calendar as CalendarIcon, BookOpen, Grape, Milk } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { OrthodoxLifeLogo } from '../components/OrthodoxLifeLogo';
 
 export const Today: React.FC = () => {
   const { user } = useUser();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const [dayInfo, setDayInfo] = useState<CalendarDay | null>(null);
   const [shortPrayer, setShortPrayer] = useState<Prayer | null>(null);
   const [quote, setQuote] = useState<string>('');
-  
-  const lang = user?.language || 'en';
-  const t = (key: string) => I18N[key][lang] || I18N[key]['en'];
 
   useEffect(() => {
     if (!user) return;
@@ -27,80 +26,82 @@ export const Today: React.FC = () => {
     setQuote(getQuoteOfDay(user.language));
   }, [user]);
 
-  if (!dayInfo) return <div className="p-8 text-center text-[#B08968] flex h-screen items-center justify-center font-serif text-lg">{t('loading')}</div>;
+  if (!dayInfo) return <div className="p-8 text-center text-primary flex h-screen items-center justify-center font-serif text-lg animate-pulse">{t('today.loading')}</div>;
 
   const getFastIcon = (type: FastType) => {
+    const baseClass = "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider";
     switch (type) {
       case 'fast_with_fish': 
-        return <div className="flex items-center gap-1.5 text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><Fish size={14} /> <span>{t('fish')}</span></div>;
+        return <div className={`${baseClass} text-blue-700 bg-blue-50 dark:bg-blue-900/30 dark:text-blue-300`}><Fish size={14} /> <span>{t('today.fast.fish')}</span></div>;
       case 'fast_with_oil': 
-        return <div className="flex items-center gap-1.5 text-purple-700 bg-purple-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><Grape size={14} /> <span>{t('wine_oil')}</span></div>;
+        return <div className={`${baseClass} text-purple-700 bg-purple-50 dark:bg-purple-900/30 dark:text-purple-300`}><Grape size={14} /> <span>{t('today.fast.oil')}</span></div>;
       case 'strict_fast': 
-        return <div className="flex items-center gap-1.5 text-red-700 bg-red-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><XCircle size={14} /> <span>{t('strict_fast')}</span></div>;
+        return <div className={`${baseClass} text-red-700 bg-red-50 dark:bg-red-900/30 dark:text-red-300`}><XCircle size={14} /> <span>{t('today.fast.strict')}</span></div>;
       case 'fast_without_oil':
-        return <div className="flex items-center gap-1.5 text-orange-700 bg-orange-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><Droplet size={14} /> <span>Fast (No Oil)</span></div>;
+        return <div className={`${baseClass} text-orange-700 bg-orange-50 dark:bg-orange-900/30 dark:text-orange-300`}><Droplet size={14} /> <span>{t('today.fast.no_oil')}</span></div>;
       case 'dairy': 
-        return <div className="flex items-center gap-1.5 text-yellow-700 bg-yellow-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><Milk size={14} /> <span>{t('dairy')}</span></div>;
+        return <div className={`${baseClass} text-yellow-700 bg-yellow-50 dark:bg-yellow-900/30 dark:text-yellow-300`}><Milk size={14} /> <span>{t('today.fast.dairy')}</span></div>;
       default: 
-        return <div className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"><CheckCircle size={14} /> <span>{t('no_fast')}</span></div>;
+        return <div className={`${baseClass} text-emerald-700 bg-emerald-50 dark:bg-emerald-900/30 dark:text-emerald-300`}><CheckCircle size={14} /> <span>{t('today.fast.none')}</span></div>;
     }
   };
 
   const formatDate = (dateString: string) => {
     const d = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return d.toLocaleDateString(user?.language === 'ro' ? 'ro-RO' : (user?.language === 'ru' ? 'ru-RU' : (user?.language === 'el' ? 'el-GR' : (user?.language === 'sr' ? 'sr-Cyrl-RS' : 'en-US'))), options);
+    const localeMap = { ro: 'ro-RO', en: 'en-US', ru: 'ru-RU', el: 'el-GR', sr: 'sr-Cyrl-RS' };
+    const locale = localeMap[user?.language || 'en'];
+    return d.toLocaleDateString(locale, options);
   };
 
   return (
-    <div className="pb-32 pt-safe px-4 max-w-lg mx-auto space-y-6 bg-[#FAF5F0] min-h-screen">
+    <div className="pb-32 pt-safe px-4 max-w-lg mx-auto space-y-6 fade-enter">
       <header className="flex justify-between items-center pt-6 mb-2">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-[#2E2A27]">{t('tab_today')}</h1>
-          <p className="text-[#6D645C] text-sm mt-1 first-letter:capitalize font-medium opacity-80">
+          <h1 className="text-3xl font-serif font-bold text-text">{t('tab.today')}</h1>
+          <p className="text-text-muted text-sm mt-1 first-letter:capitalize font-medium opacity-80">
             {formatDate(dayInfo.date)}
           </p>
         </div>
-        <div className="bg-white p-2 rounded-full shadow-sm">
-          <OrthodoxLifeLogo size={32} />
+        <div className="bg-card p-2 rounded-full shadow-sm">
+          <OrthodoxLifeLogo size={32} className="text-primary" />
         </div>
       </header>
 
       {/* Main Card: Feast & Fast */}
       <div 
         onClick={() => navigate(`/calendar/${dayInfo.date}`)}
-        className="bg-white rounded-[24px] p-6 shadow-[0_10px_30px_rgba(176,137,104,0.1)] border border-[#DDB892]/20 relative overflow-hidden active:scale-[0.98] transition-all cursor-pointer group"
+        className="bg-card rounded-[24px] p-6 shadow-soft border border-border relative overflow-hidden active-press cursor-pointer group"
       >
-        {/* Decorative background gradient */}
         <div className={`absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl opacity-20 -mr-10 -mt-10 transition-transform duration-700
-          ${dayInfo.importanceLevel === 'high_feast' ? 'bg-red-400' : 'bg-[#B08968]'}`}></div>
+          ${dayInfo.importanceLevel === 'high_feast' ? 'bg-red-500' : 'bg-primary'}`}></div>
         
         <div className="relative z-10">
           <div className="mb-4 flex items-center justify-between">
              {getFastIcon(dayInfo.fastType)}
-             <CalendarIcon size={20} className="text-[#DDB892]" />
+             <CalendarIcon size={20} className="text-accent" />
           </div>
-          <h2 className={`font-serif text-[#2E2A27] font-bold leading-tight mb-3 ${dayInfo.feastName.length > 30 ? 'text-xl' : 'text-3xl'} ${dayInfo.importanceLevel === 'high_feast' ? 'text-red-800' : ''}`}>
+          <h2 className={`font-serif text-text font-bold leading-tight mb-3 ${dayInfo.feastName.length > 30 ? 'text-xl' : 'text-3xl'} ${dayInfo.importanceLevel === 'high_feast' ? 'text-red-700 dark:text-red-400' : ''}`}>
             {dayInfo.feastName}
           </h2>
-          <p className="text-[#6D645C] text-sm line-clamp-2 leading-relaxed">
+          <p className="text-text-muted text-sm line-clamp-2 leading-relaxed">
             {dayInfo.descriptionShort}
           </p>
-          <div className="mt-5 flex items-center text-[#B08968] text-xs font-bold uppercase tracking-widest group-hover:gap-2 transition-all">
-            <span>Details</span>
+          <div className="mt-5 flex items-center text-primary text-xs font-bold uppercase tracking-widest group-hover:gap-2 transition-all">
+            <span>{t('btn.details')}</span>
             <ChevronRight size={14} className="ml-1" />
           </div>
         </div>
       </div>
 
       {/* Quote of the Day */}
-      <div className="bg-[#2E2A27] text-[#FAF5F0] rounded-[24px] p-6 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#B08968] rounded-full blur-[60px] opacity-30 -mr-6 -mt-6"></div>
+      <div className="bg-[#2E2A27] dark:bg-card text-[#FAF5F0] dark:text-text rounded-[24px] p-6 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary rounded-full blur-[60px] opacity-30 -mr-6 -mt-6"></div>
         <div className="relative z-10">
-          <h3 className="text-[10px] uppercase tracking-[0.2em] text-[#DDB892] font-bold mb-4 opacity-80">
-            {t('quote_of_day')}
+          <h3 className="text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-4 opacity-80">
+            {t('today.quote')}
           </h3>
-          <blockquote className="font-serif text-xl italic leading-relaxed text-[#FAF5F0] opacity-90">
+          <blockquote className="font-serif text-xl italic leading-relaxed opacity-90">
             {quote}
           </blockquote>
         </div>
@@ -109,15 +110,15 @@ export const Today: React.FC = () => {
       {/* Prayer of the Day Suggestion */}
       {shortPrayer && (
         <Link to={`/prayers/${shortPrayer.id}`} className="block group">
-          <div className="bg-white rounded-[20px] p-5 shadow-sm border border-[#DDB892]/20 flex items-center gap-5 group-active:scale-[0.99] transition-transform">
-            <div className="bg-[#FAF5F0] text-[#B08968] p-4 rounded-full">
+          <div className="bg-card rounded-[20px] p-5 shadow-soft border border-border flex items-center gap-5 active-press transition-transform">
+            <div className="bg-bg text-primary p-4 rounded-full">
               <BookOpen size={24} />
             </div>
             <div className="flex-1">
-              <h3 className="text-xs text-[#6D645C] font-bold uppercase tracking-wider mb-1">Prayer for today</h3>
-              <p className="font-serif font-bold text-lg text-[#2E2A27] leading-tight">{shortPrayer.title}</p>
+              <h3 className="text-xs text-text-muted font-bold uppercase tracking-wider mb-1">{t('today.prayer_suggestion')}</h3>
+              <p className="font-serif font-bold text-lg text-text leading-tight">{shortPrayer.title}</p>
             </div>
-            <div className="bg-[#FAF5F0] rounded-full p-2 text-[#B08968]">
+            <div className="bg-bg rounded-full p-2 text-primary">
                <ChevronRight size={20} />
             </div>
           </div>
