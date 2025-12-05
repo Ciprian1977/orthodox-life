@@ -44,7 +44,7 @@ const MenuList: React.FC = () => {
       
       <div className="mt-12 text-center space-y-4">
         <OrthodoxLifeLogo className="mx-auto opacity-50 text-primary" size={40} />
-        <p className="text-xs text-text-muted font-medium opacity-60">Orthodox Life v1.0.0</p>
+        <p className="text-xs text-text-muted font-medium opacity-60">{t('about.version')}</p>
       </div>
     </div>
   );
@@ -67,25 +67,25 @@ const AboutPage: React.FC = () => {
 
       <div className="space-y-6 animate-in slide-in-from-bottom-5 delay-100">
         <section className="bg-card p-6 rounded-2xl shadow-soft border border-border">
-          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">Our Mission</h3>
+          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">{t('about.mission.title')}</h3>
           <p className="text-text leading-relaxed font-serif">
-            To provide a calm, respectful, and reliable companion for Orthodox Christians worldwide. We aim to make the rhythm of Church life—feasts, fasts, and prayers—accessible in the modern world without losing the depth of tradition.
+            {t('about.mission.desc')}
           </p>
         </section>
 
         <section className="bg-card p-6 rounded-2xl shadow-soft border border-border">
-          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">How It Works</h3>
+          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">{t('about.how.title')}</h3>
           <ul className="list-disc list-inside space-y-2 text-text font-serif text-sm">
-             <li><strong>Calendar Engine:</strong> Calculates Pascha and movable feasts dynamically based on Church canons.</li>
-             <li><strong>Library:</strong> Safe, curated prayers and educational articles.</li>
-             <li><strong>AI Helper:</strong> Uses Google Gemini to answer questions with strict Orthodox context guardrails.</li>
+             <li><strong>{t('about.how.engine_title')}:</strong> {t('about.how.engine_desc')}</li>
+             <li><strong>{t('about.how.library_title')}:</strong> {t('about.how.library_desc')}</li>
+             <li><strong>{t('about.how.ai_title')}:</strong> {t('about.how.ai_desc')}</li>
           </ul>
         </section>
 
         <section className="bg-card p-6 rounded-2xl shadow-soft border border-border">
-          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">Disclaimer</h3>
+          <h3 className="font-bold text-primary uppercase tracking-widest text-xs mb-3">{t('about.disclaimer.title')}</h3>
           <p className="text-text-muted text-sm leading-relaxed">
-            This app is a tool, not a spiritual father. For personal guidance, sacraments, or serious life decisions, please always consult your local priest.
+            {t('about.disclaimer.desc')}
           </p>
         </section>
       </div>
