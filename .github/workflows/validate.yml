@@ -1,0 +1,48 @@
+name: Code Quality & Deployment Checks
+
+on:
+  push:
+    branches: [ main, copilot/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Validate imports
+      run: npm run validate:imports
+    
+    - name: Check security vulnerabilities
+      run: npm run validate:security
+    
+    - name: Check deployment readiness
+      run: npm run validate:deployment
+    
+    - name: Build for production
+      run: npm run build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: dist-${{ matrix.node-version }}
+        path: dist/
+        retention-days: 7
