@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
-import { useI18n } from '../contexts/I18nContext';
+import { RO_TEXT } from '../ro-text';
 import { generateAIResponse } from '../services/geminiService';
 import { Send, Bot, User as UserIcon } from 'lucide-react';
 import { OrthodoxLifeLogo } from '../components/OrthodoxLifeLogo';
@@ -15,7 +15,6 @@ interface Message {
 
 export const AIHelper: React.FC = () => {
   const { user } = useUser();
-  const { t } = useI18n();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +40,7 @@ export const AIHelper: React.FC = () => {
     setInput('');
     setLoading(true);
 
-    const responseText = await generateAIResponse(userMsg.text, user.language, user.countryTradition);
+    const responseText = await generateAIResponse(userMsg.text, user.countryTradition);
 
     const aiMsg: Message = {
       id: (Date.now() + 1).toString(),
@@ -60,11 +59,11 @@ export const AIHelper: React.FC = () => {
       <div className="p-4 border-b border-border bg-bg/80 backdrop-blur z-10 shadow-sm pt-safe">
         <h1 className="font-serif font-bold text-xl text-text flex items-center gap-3">
            <OrthodoxLifeLogo size={28} className="text-primary" />
-           {t('ui.askAi.title')}
+           {RO_TEXT.ai.title}
         </h1>
         {/* Subtitle specifically requested */}
-        <p className="text-sm text-text-muted mt-1 ml-10 leading-snug font-serif italic">{t('ui.askAi.subtitle')}</p>
-        <p className="text-xs text-text-muted mt-2 ml-10 leading-snug opacity-80">{t('ui.askAi.disclaimer')}</p>
+        <p className="text-sm text-text-muted mt-1 ml-10 leading-snug font-serif italic">{RO_TEXT.ai.subtitle}</p>
+        <p className="text-xs text-text-muted mt-2 ml-10 leading-snug opacity-80">{RO_TEXT.ai.disclaimer}</p>
       </div>
 
       {/* Chat Area */}
@@ -72,7 +71,7 @@ export const AIHelper: React.FC = () => {
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center text-primary opacity-50 space-y-4">
              <OrthodoxLifeLogo size={64} className="text-primary" />
-             <p className="max-w-xs font-serif text-lg">"{t('ui.askAi.empty')}"</p>
+             <p className="max-w-xs font-serif text-lg">"{RO_TEXT.ai.empty}"</p>
           </div>
         )}
         
@@ -90,7 +89,7 @@ export const AIHelper: React.FC = () => {
         {loading && (
           <div className="flex justify-start">
              <div className="bg-card border border-border text-text-muted px-5 py-3 rounded-full text-sm font-medium animate-pulse shadow-sm">
-               {t('ui.askAi.consulting')}
+               {RO_TEXT.ai.consulting}
              </div>
           </div>
         )}
@@ -105,7 +104,7 @@ export const AIHelper: React.FC = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={t('ui.askAi.placeholder')}
+            placeholder={RO_TEXT.ai.placeholder}
             className="flex-1 bg-bg border-none rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary outline-none text-text placeholder:text-text-muted"
           />
           <button 

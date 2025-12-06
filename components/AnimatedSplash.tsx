@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { OrthodoxLifeLogo } from './OrthodoxLifeLogo';
-import { useI18n } from '../contexts/I18nContext';
+import { RO_TEXT } from '../ro-text';
 
 interface SplashProps {
   onFinish: () => void;
 }
 
 export const AnimatedSplash: React.FC<SplashProps> = ({ onFinish }) => {
-  // Safe access to translation with fallback
-  let t: (k: string) => string = (k) => k;
-  try {
-    const i18n = useI18n();
-    t = i18n.t;
-  } catch (e) {
-    t = (k) => (k === 'app.name' ? 'Orthodox Life' : 'Guidance. Prayer. Peace.');
-  }
-
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
@@ -42,11 +33,11 @@ export const AnimatedSplash: React.FC<SplashProps> = ({ onFinish }) => {
       </div>
       
       <div className={`mt-6 font-serif text-xl text-primary font-medium tracking-wide transition-all duration-1000 delay-300 ${stage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        {t('app.name')}
+        {RO_TEXT.app.name}
       </div>
       
       <div className={`mt-2 text-text-muted text-xs uppercase tracking-[0.3em] transition-all duration-1000 delay-500 ${stage >= 1 ? 'opacity-60' : 'opacity-0'}`}>
-        {t('app.tagline')}
+        {RO_TEXT.app.tagline}
       </div>
     </div>
   );

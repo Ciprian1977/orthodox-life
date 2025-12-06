@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
+import { RO_TEXT } from '../ro-text';
 import { useTheme } from '../contexts/ThemeContext';
-import { useI18n } from '../contexts/I18nContext';
-import { SUPPORTED_LANGUAGES, SUPPORTED_TRADITIONS } from '../constants';
+import { SUPPORTED_TRADITIONS } from '../constants';
 import { getArticles, getAudioItems } from '../services/dataService';
 import { Article, AudioItem } from '../types';
 import { Book, Music, Settings, ChevronRight, ArrowLeft, Play, Pause, Volume2, Globe, MapPin, Bell, RefreshCw, Info, Moon, Sun, Monitor } from 'lucide-react';
@@ -12,18 +12,17 @@ import { OrthodoxLifeLogo } from '../components/OrthodoxLifeLogo';
 
 // --- MENU MAIN ---
 const MenuList: React.FC = () => {
-  const { t } = useI18n();
 
   const items = [
-    { id: 'guide', label: t('menu.guide'), icon: Book, path: '/menu/guide', color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
-    { id: 'audio', label: t('menu.audio'), icon: Music, path: '/menu/audio', color: 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
-    { id: 'settings', label: t('menu.settings'), icon: Settings, path: '/menu/settings', color: 'bg-bg text-text-muted' },
-    { id: 'about', label: t('menu.about'), icon: Info, path: '/menu/about', color: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+    { id: 'guide', label: RO_TEXT.menu.guide, icon: Book, path: '/menu/guide', color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
+    { id: 'audio', label: RO_TEXT.menu.audio, icon: Music, path: '/menu/audio', color: 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+    { id: 'settings', label: RO_TEXT.menu.settings, icon: Settings, path: '/menu/settings', color: 'bg-bg text-text-muted' },
+    { id: 'about', label: RO_TEXT.menu.about, icon: Info, path: '/menu/about', color: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
   ];
 
   return (
     <div className="p-4 pt-safe max-w-lg mx-auto bg-bg min-h-screen fade-enter">
-      <h1 className="text-3xl font-serif font-bold text-text mb-8 mt-6">{t('tab.more')}</h1>
+      <h1 className="text-3xl font-serif font-bold text-text mb-8 mt-6">{RO_TEXT.tab.more}</h1>
       
       <div className="space-y-4">
         {items.map(item => {
@@ -53,11 +52,10 @@ const MenuList: React.FC = () => {
 // --- ABOUT PAGE ---
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useI18n();
   
   return (
     <div className="pb-24 pt-safe p-4 max-w-lg mx-auto bg-bg min-h-screen">
-      <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {t('btn.back')}</button>
+      <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {RO_TEXT.btn.back}</button>
       
       <div className="flex flex-col items-center mb-8 mt-4 animate-in fade-in zoom-in duration-500">
         <OrthodoxLifeLogo size={80} className="text-primary" />
@@ -97,12 +95,11 @@ const AboutPage: React.FC = () => {
 const GuidePage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useUser();
-  const { t } = useI18n();
   const [articles, setArticles] = useState<Article[]>([]);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   useEffect(() => {
-    if(user) getArticles(user.language).then(setArticles);
+    if(user) getArticles().then(setArticles);
   }, [user]);
 
   if (selectedArticle) {
@@ -111,7 +108,7 @@ const GuidePage: React.FC = () => {
         <div className="max-w-lg mx-auto pt-safe min-h-screen">
            <div className="sticky top-0 bg-bg/95 backdrop-blur border-b border-border px-4 py-3 flex items-center gap-4 z-10">
               <button onClick={() => setSelectedArticle(null)} className="p-2 -ml-2 text-text-muted hover:bg-card rounded-full"><ArrowLeft size={24} /></button>
-              <span className="font-bold text-text truncate">{t('menu.guide')}</span>
+              <span className="font-bold text-text truncate">{RO_TEXT.menu.guide}</span>
            </div>
            <div className="p-6">
               <div className="inline-block px-3 py-1 bg-text text-bg rounded-full text-xs font-bold uppercase tracking-wider mb-4">
@@ -129,8 +126,8 @@ const GuidePage: React.FC = () => {
 
   return (
      <div className="pb-32 pt-safe p-4 max-w-lg mx-auto bg-bg min-h-screen">
-        <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {t('btn.back')}</button>
-        <h1 className="text-3xl font-serif font-bold mb-6 text-text">{t('menu.guide')}</h1>
+        <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {RO_TEXT.btn.back}</button>
+        <h1 className="text-3xl font-serif font-bold mb-6 text-text">{RO_TEXT.menu.guide}</h1>
         
         <div className="space-y-4">
            {articles.map(a => (
@@ -141,7 +138,7 @@ const GuidePage: React.FC = () => {
              >
                <div className="flex justify-between items-start mb-2">
                  <span className="text-xs font-bold text-primary uppercase tracking-wide">{a.category}</span>
-                 <span className="text-xs text-accent">{a.readingTimeMinutes} {t('guide.read_time')}</span>
+                 <span className="text-xs text-accent">{a.readingTimeMinutes} {RO_TEXT.guide.read_time}</span>
                </div>
                <h3 className="font-serif font-bold text-xl text-text mb-1">{a.title}</h3>
              </div>
@@ -155,14 +152,13 @@ const GuidePage: React.FC = () => {
 const AudioPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useUser();
-  const { t } = useI18n();
   const [items, setItems] = useState<AudioItem[]>([]);
   const [currentTrack, setCurrentTrack] = useState<AudioItem | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if(user) getAudioItems(user.language).then(setItems);
+    if(user) getAudioItems().then(setItems);
   }, [user]);
 
   useEffect(() => {
@@ -184,8 +180,8 @@ const AudioPage: React.FC = () => {
 
   return (
      <div className="pb-40 pt-safe p-4 max-w-lg mx-auto relative min-h-screen bg-bg">
-        <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {t('btn.back')}</button>
-        <h1 className="text-3xl font-serif font-bold mb-6 text-text">{t('menu.audio')}</h1>
+        <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {RO_TEXT.btn.back}</button>
+        <h1 className="text-3xl font-serif font-bold mb-6 text-text">{RO_TEXT.menu.audio}</h1>
         
         <div className="space-y-3">
            {items.map(item => (
@@ -231,33 +227,23 @@ const AudioPage: React.FC = () => {
 // --- SETTINGS PAGE ---
 const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
-    const { user, setUser, updateLanguage, updateTradition } = useUser();
+    const { user, setUser, updateTradition } = useUser();
     const { theme, setTheme } = useTheme();
-    const { t, setLanguage } = useI18n();
     
     if (!user) return null;
 
-    const handleLanguageUpdate = (code: any) => {
-      updateLanguage(code);
-      setLanguage(code);
-    }
-
-    const handleRestartOnboarding = () => {
-      setUser({ ...user, hasOnboarded: false });
-      navigate('/');
-    };
     
     return (
        <div className="pb-32 pt-safe p-4 max-w-lg mx-auto bg-bg min-h-screen">
-          <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {t('btn.back')}</button>
-          <h1 className="text-3xl font-serif font-bold mb-6 text-text">{t('menu.settings')}</h1>
+          <button onClick={() => navigate(-1)} className="mb-4 text-text-muted flex items-center gap-1 hover:text-text"><ArrowLeft size={16} /> {RO_TEXT.btn.back}</button>
+          <h1 className="text-3xl font-serif font-bold mb-6 text-text">{RO_TEXT.menu.settings}</h1>
           
           <div className="space-y-6">
             
             {/* Theme Section */}
             <section className="bg-card rounded-2xl border border-border p-5 shadow-soft">
                <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-                 <Sun size={16} /> {t('settings.appearance')}
+                 <Sun size={16} /> {RO_TEXT.settings.appearance}
                </h3>
                <div className="flex bg-bg p-1 rounded-xl">
                   {['light', 'dark', 'system'].map((tMode) => (
@@ -276,30 +262,11 @@ const SettingsPage: React.FC = () => {
                </div>
             </section>
 
-            {/* Language Section */}
-            <section className="bg-card rounded-2xl border border-border p-5 shadow-soft">
-               <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-                 <Globe size={16} /> {t('settings.language')}
-               </h3>
-               <div className="grid grid-cols-1 gap-2">
-                 {SUPPORTED_LANGUAGES.map(lang => (
-                   <button 
-                     key={lang.code}
-                     onClick={() => handleLanguageUpdate(lang.code)}
-                     className={`flex items-center justify-between p-3 rounded-xl transition-colors
-                       ${user.language === lang.code ? 'bg-text text-bg font-bold' : 'hover:bg-bg text-text'}`}
-                   >
-                     <span>{lang.label}</span>
-                     {user.language === lang.code && <div className="w-2 h-2 bg-primary rounded-full"></div>}
-                   </button>
-                 ))}
-               </div>
-            </section>
 
             {/* Tradition Section */}
             <section className="bg-card rounded-2xl border border-border p-5 shadow-soft">
                <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-                 <MapPin size={16} /> {t('settings.tradition')}
+                 <MapPin size={16} /> {RO_TEXT.settings.tradition}
                </h3>
                <div className="grid grid-cols-1 gap-2">
                  {SUPPORTED_TRADITIONS.map(tr => (
@@ -318,16 +285,16 @@ const SettingsPage: React.FC = () => {
 
              {/* Actions */}
             <section className="bg-card rounded-2xl border border-border p-5 shadow-soft space-y-3">
-               <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4">{t('settings.actions')}</h3>
+               <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4">{RO_TEXT.settings.actions}</h3>
                
                <button onClick={handleRestartOnboarding} className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-bg text-text transition-colors text-left">
                   <RefreshCw size={20} className="text-primary" />
-                  <span>{t('btn.restart_onboarding')}</span>
+                  <span>{RO_TEXT.btn.restart_onboarding}</span>
                </button>
 
                <button onClick={() => { localStorage.clear(); setUser(null); }} className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/10 text-red-600 dark:text-red-400 transition-colors text-left">
                   <Bell size={20} />
-                  <span>{t('btn.reset')}</span>
+                  <span>{RO_TEXT.btn.reset}</span>
                </button>
             </section>
           </div>
