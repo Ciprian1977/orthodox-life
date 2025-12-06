@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { UserProfile, Language, CountryTradition } from '../types';
+import { UserProfile, CountryTradition } from '../types';
 
 interface UserContextType {
   user: UserProfile | null;
   setUser: React.Dispatch<React.SetStateAction<UserProfile | null>>;
-  updateLanguage: (lang: Language) => void;
   updateTradition: (tradition: CountryTradition) => void;
   toggleFavoritePrayer: (id: string) => void;
   toggleFavoriteAudio: (id: string) => void;
@@ -27,10 +26,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(u);
     localStorage.setItem('orthodox_compass_user', JSON.stringify(u));
     // In real app, sync to Firebase 'users' collection here
-  };
-
-  const updateLanguage = (lang: Language) => {
-    if (user) saveUser({ ...user, language: lang });
   };
 
   const updateTradition = (tradition: CountryTradition) => {
@@ -60,7 +55,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, updateLanguage, updateTradition, toggleFavoritePrayer, toggleFavoriteAudio, updateSettings }}>
+    <UserContext.Provider value={{ user, setUser, updateTradition, toggleFavoritePrayer, toggleFavoriteAudio, updateSettings }}>
       {children}
     </UserContext.Provider>
   );
