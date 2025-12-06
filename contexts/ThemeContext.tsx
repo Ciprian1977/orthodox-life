@@ -12,10 +12,13 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize from local storage or default to 'system'
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    const stored = localStorage.getItem('orthodox_life_theme');
-    return (stored as ThemeMode) || 'system';
+    try {
+      const stored = localStorage.getItem('orthodox_life_theme');
+      return (stored as ThemeMode) || 'system';
+    } catch {
+      return 'system';
+    }
   });
 
   const [isDark, setIsDark] = useState(false);
@@ -65,6 +68,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used within ThemeProvider');
+  if (!context) {
+    return { theme: 'system', setTheme: () => {}, isDark: false, toggleTheme: () => {} } as ThemeContextType;
+  }
   return context;
 };

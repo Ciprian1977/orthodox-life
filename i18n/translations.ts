@@ -20,7 +20,6 @@ export const translations: Record<Language, Dictionary> = {
     "btn.read": "Read Article",
     "btn.reset": "Reset App (Debug)",
     "btn.restart_onboarding": "Restart Setup",
-    "btn.details": "Details",
 
     // Tabs
     "tab.today": "Today",
@@ -57,7 +56,6 @@ export const translations: Record<Language, Dictionary> = {
     "today.fast.dairy": "Dairy Allowed",
     "today.fast.none": "No Fast",
     "today.fast.no_oil": "Fast (No Oil)",
-    "today.fast.generic": "Fast",
 
     // Calendar
     "calendar.legend": "Legend",
@@ -72,7 +70,6 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.library": "Library",
     "prayers.generator": "AI Generator",
     "prayers.search": "Search prayers...",
-    "prayers.placeholder": "Official Liturgical Text Placeholder",
     "prayers.cat.all": "All",
     "prayers.cat.morning": "Morning",
     "prayers.cat.evening": "Evening",
@@ -93,7 +90,7 @@ export const translations: Record<Language, Dictionary> = {
 
     // AI Helper
     "ui.askAi.title": "Ask AI",
-    "ui.askAi.subtitle": "Ask a Spiritual Friend",
+    "ui.askAi.subtitle": "Receive gentle and helpful guidance whenever you need it.",
     "ui.askAi.disclaimer": "I am an AI assistant. My answers are based on general Orthodox teachings. For personal spiritual guidance, please consult your priest.",
     "ui.askAi.placeholder": "Ask a question...",
     "ui.askAi.consulting": "Consulting...",
@@ -109,20 +106,6 @@ export const translations: Record<Language, Dictionary> = {
     "settings.tradition": "Tradition",
     "settings.actions": "Actions",
     
-    // About Page
-    "about.mission.title": "Our Mission",
-    "about.mission.desc": "To provide a calm, respectful, and reliable companion for Orthodox Christians worldwide. We aim to make the rhythm of Church life—feasts, fasts, and prayers—accessible in the modern world without losing the depth of tradition.",
-    "about.how.title": "How It Works",
-    "about.how.engine_title": "Calendar Engine",
-    "about.how.engine_desc": "Calculates Pascha and movable feasts dynamically based on Church canons.",
-    "about.how.library_title": "Library",
-    "about.how.library_desc": "Safe, curated prayers and educational articles.",
-    "about.how.ai_title": "AI Helper",
-    "about.how.ai_desc": "Uses Google Gemini to answer questions with strict Orthodox context guardrails.",
-    "about.disclaimer.title": "Disclaimer",
-    "about.disclaimer.desc": "This app is a tool, not a spiritual father. For personal guidance, sacraments, or serious life decisions, please always consult your local priest.",
-    "about.version": "Orthodox Life v1.0.0",
-
     // Audio
     "audio.available": "Audio Available",
     "audio.listen": "Listen",
@@ -144,7 +127,6 @@ export const translations: Record<Language, Dictionary> = {
     "btn.read": "Citește Articol",
     "btn.reset": "Resetare (Debug)",
     "btn.restart_onboarding": "Reia Configurarea",
-    "btn.details": "Detalii",
 
     "tab.today": "Astăzi",
     "tab.calendar": "Calendar",
@@ -178,7 +160,6 @@ export const translations: Record<Language, Dictionary> = {
     "today.fast.dairy": "Dezlegare la Brânză",
     "today.fast.none": "Harți (Fără Post)",
     "today.fast.no_oil": "Post (Fără Ulei)",
-    "today.fast.generic": "Post",
 
     "calendar.legend": "Legendă",
     "calendar.legend.major": "Sărbătoare Mare",
@@ -191,7 +172,6 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.library": "Bibliotecă",
     "prayers.generator": "Generator AI",
     "prayers.search": "Caută rugăciuni...",
-    "prayers.placeholder": "Substituent Text Liturgic Oficial",
     "prayers.cat.all": "Toate",
     "prayers.cat.morning": "Dimineața",
     "prayers.cat.evening": "Seara",
@@ -211,7 +191,7 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.gen.result": "Rugăciunea Ta",
 
     "ui.askAi.title": "Întreabă AI",
-    "ui.askAi.subtitle": "Întreabă un Prieten Duhovnicesc",
+    "ui.askAi.subtitle": "Primește un sfat blând și folositor atunci când ai nevoie.",
     "ui.askAi.disclaimer": "Sunt un asistent AI. Răspunsurile mele se bazează pe învățături ortodoxe. Pentru sfaturi duhovnicești, discută cu preotul.",
     "ui.askAi.placeholder": "Pune o întrebare...",
     "ui.askAi.consulting": "Se consultă...",
@@ -225,19 +205,6 @@ export const translations: Record<Language, Dictionary> = {
     "settings.language": "Limbă",
     "settings.tradition": "Tradiție",
     "settings.actions": "Acțiuni",
-
-    "about.mission.title": "Misiunea Noastră",
-    "about.mission.desc": "Să oferim un însoțitor calm, respectuos și de încredere pentru creștinii ortodocși din întreaga lume. Ne propunem să facem ritmul vieții bisericești accesibil în lumea modernă, păstrând profunzimea tradiției.",
-    "about.how.title": "Cum Funcționează",
-    "about.how.engine_title": "Motor Calendar",
-    "about.how.engine_desc": "Calculează Paștele și sărbătorile mobile dinamic.",
-    "about.how.library_title": "Bibliotecă",
-    "about.how.library_desc": "Rugăciuni sigure și articole educaționale.",
-    "about.how.ai_title": "Asistent AI",
-    "about.how.ai_desc": "Folosește Google Gemini pentru răspunsuri ortodoxe.",
-    "about.disclaimer.title": "Declinarea Responsabilității",
-    "about.disclaimer.desc": "Această aplicație este o unealtă, nu un duhovnic. Consultați întotdeauna preotul local.",
-    "about.version": "Viața Ortodoxă v1.0.0",
 
     "audio.available": "Audio Disponibil",
     "audio.listen": "Ascultă",
@@ -257,7 +224,6 @@ export const translations: Record<Language, Dictionary> = {
     "btn.read": "Читать",
     "btn.reset": "Сброс",
     "btn.restart_onboarding": "Настроить заново",
-    "btn.details": "Подробнее",
 
     "tab.today": "Сегодня",
     "tab.calendar": "Календарь",
@@ -291,10 +257,9 @@ export const translations: Record<Language, Dictionary> = {
     "today.fast.dairy": "Сыр и яйца",
     "today.fast.none": "Поста нет",
     "today.fast.no_oil": "Пост (без елея)",
-    "today.fast.generic": "Пост",
 
     "calendar.legend": "Легенда",
-    "calendar.legend.major": "Велики праздник",
+    "calendar.legend.major": "Великий праздник",
     "calendar.legend.strict": "Строгий пост",
     "calendar.legend.fish": "Рыба",
     "calendar.legend.oil": "Елей",
@@ -304,7 +269,6 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.library": "Библиотека",
     "prayers.generator": "ИИ Генератор",
     "prayers.search": "Поиск молитв...",
-    "prayers.placeholder": "Официальный Литургический Текст",
     "prayers.cat.all": "Все",
     "prayers.cat.morning": "Утренние",
     "prayers.cat.evening": "Вечерние",
@@ -324,7 +288,7 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.gen.result": "Ваша молитва",
 
     "ui.askAi.title": "Спросить ИИ",
-    "ui.askAi.subtitle": "Спроси Духовного Друга",
+    "ui.askAi.subtitle": "Получай мягкий и полезный совет, когда тебе нужно.",
     "ui.askAi.disclaimer": "Я ИИ-помощник. Мои ответы основаны на общем учении. За личным советом обратитесь к священнику.",
     "ui.askAi.placeholder": "Задайте вопрос...",
     "ui.askAi.consulting": "Думаю...",
@@ -338,19 +302,6 @@ export const translations: Record<Language, Dictionary> = {
     "settings.language": "Язык",
     "settings.tradition": "Традиция",
     "settings.actions": "Действия",
-
-    "about.mission.title": "Наша Миссия",
-    "about.mission.desc": "Быть спокойным и надежным спутником для православных христиан.",
-    "about.how.title": "Как это работает",
-    "about.how.engine_title": "Календарь",
-    "about.how.engine_desc": "Рассчитывает Пасху и праздники.",
-    "about.how.library_title": "Библиотека",
-    "about.how.library_desc": "Избранные молитвы и статьи.",
-    "about.how.ai_title": "ИИ Помощник",
-    "about.how.ai_desc": "Ответы в рамках традиции.",
-    "about.disclaimer.title": "Отказ от ответственности",
-    "about.disclaimer.desc": "Это приложение — инструмент, а не духовник.",
-    "about.version": "Православная жизнь v1.0.0",
 
     "audio.available": "Есть аудио",
     "audio.listen": "Слушать",
@@ -370,7 +321,6 @@ export const translations: Record<Language, Dictionary> = {
     "btn.read": "Διαβάστε",
     "btn.reset": "Επαναφορά",
     "btn.restart_onboarding": "Ρύθμιση",
-    "btn.details": "Λεπτομέρειες",
 
     "tab.today": "Σήμερα",
     "tab.calendar": "Ημερολόγιο",
@@ -404,7 +354,6 @@ export const translations: Record<Language, Dictionary> = {
     "today.fast.dairy": "Τυροφάγος",
     "today.fast.none": "Κατάλυση",
     "today.fast.no_oil": "Νηστεία (Άνευ ελαίου)",
-    "today.fast.generic": "Νηστεία",
 
     "calendar.legend": "Υπόμνημα",
     "calendar.legend.major": "Μεγάλη Εορτή",
@@ -417,7 +366,6 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.library": "Βιβλιοθήκη",
     "prayers.generator": "AI Γεννήτρια",
     "prayers.search": "Αναζήτηση...",
-    "prayers.placeholder": "Επίσημο Λειτουργικό Κείμενο",
     "prayers.cat.all": "Όλα",
     "prayers.cat.morning": "Πρωινές",
     "prayers.cat.evening": "Βραδινές",
@@ -437,7 +385,7 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.gen.result": "Η Προσευχή σας",
 
     "ui.askAi.title": "Ρωτήστε AI",
-    "ui.askAi.subtitle": "Ρώτησε έναν Πνευματικό Φίλο",
+    "ui.askAi.subtitle": "Λάβε μια γλυκιά και χρήσιμη συμβουλή όποτε τη χρειάζεσαι.",
     "ui.askAi.disclaimer": "Είμαι βοηθός AI. Για προσωπική καθοδήγηση συμβουλευτείτε ιερέα.",
     "ui.askAi.placeholder": "Κάντε μια ερώτηση...",
     "ui.askAi.consulting": "Σκέφτεται...",
@@ -451,19 +399,6 @@ export const translations: Record<Language, Dictionary> = {
     "settings.language": "Γλώσσα",
     "settings.tradition": "Παράδοση",
     "settings.actions": "Ενέργειες",
-
-    "about.mission.title": "Η Αποστολή μας",
-    "about.mission.desc": "Να παρέχουμε έναν ήρεμο και αξιόπιστο σύντροφο για τους Ορθόδοξους Χριστιανούς.",
-    "about.how.title": "Πώς λειτουργεί",
-    "about.how.engine_title": "Ημερολόγιο",
-    "about.how.engine_desc": "Υπολογίζει το Πάσχα και τις εορτές.",
-    "about.how.library_title": "Βιβλιοθήκη",
-    "about.how.library_desc": "Προσευχές και άρθρα.",
-    "about.how.ai_title": "Βοηθός AI",
-    "about.how.ai_desc": "Ορθόδοξες απαντήσεις.",
-    "about.disclaimer.title": "Αποποίηση ευθύνης",
-    "about.disclaimer.desc": "Αυτή η εφαρμογή είναι εργαλείο, όχι πνευματικός πατέρας.",
-    "about.version": "Ορθόδοξη Ζωή v1.0.0",
 
     "audio.available": "Διαθέσιμος Ήχος",
     "audio.listen": "Ακούστε",
@@ -483,7 +418,6 @@ export const translations: Record<Language, Dictionary> = {
     "btn.read": "Читај",
     "btn.reset": "Ресет",
     "btn.restart_onboarding": "Подешавање",
-    "btn.details": "Детаљи",
 
     "tab.today": "Данас",
     "tab.calendar": "Календар",
@@ -517,11 +451,10 @@ export const translations: Record<Language, Dictionary> = {
     "today.fast.dairy": "Бели мрс",
     "today.fast.none": "Нема поста",
     "today.fast.no_oil": "Пост (без уља)",
-    "today.fast.generic": "Пост",
 
     "calendar.legend": "Легенда",
     "calendar.legend.major": "Велики празник",
-    "calendar.legend.strict": "Строгий пост",
+    "calendar.legend.strict": "Строги пост",
     "calendar.legend.fish": "Риба",
     "calendar.legend.oil": "Уље",
     "calendar.saints": "Светитељи",
@@ -530,7 +463,6 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.library": "Библиотека",
     "prayers.generator": "АИ Генератор",
     "prayers.search": "Претрага...",
-    "prayers.placeholder": "Званични Литургијски Текст",
     "prayers.cat.all": "Све",
     "prayers.cat.morning": "Јутарње",
     "prayers.cat.evening": "Вечерње",
@@ -550,7 +482,7 @@ export const translations: Record<Language, Dictionary> = {
     "prayers.gen.result": "Ваша Молитва",
 
     "ui.askAi.title": "Питај АИ",
-    "ui.askAi.subtitle": "Питај Духовног Пријатеља",
+    "ui.askAi.subtitle": "Прими благ и користан савет кад год ти затреба.",
     "ui.askAi.disclaimer": "Ја сам АИ. За лични духовни савет обратите се свештенику.",
     "ui.askAi.placeholder": "Поставите питање...",
     "ui.askAi.consulting": "Размишљам...",
@@ -562,21 +494,8 @@ export const translations: Record<Language, Dictionary> = {
     "menu.about": "О апликацији",
     "settings.appearance": "Изглед",
     "settings.language": "Језик",
-    "settings.tradition": "Традиция",
+    "settings.tradition": "Традиција",
     "settings.actions": "Акције",
-
-    "about.mission.title": "Наша Мисија",
-    "about.mission.desc": "Да пружимо мирног и поузданог сапутника за православне хришћане.",
-    "about.how.title": "Како ради",
-    "about.how.engine_title": "Календар",
-    "about.how.engine_desc": "Рачуна Васкрс и празнике.",
-    "about.how.library_title": "Библиотека",
-    "about.how.library_desc": "Одабране молитве и чланци.",
-    "about.how.ai_title": "АИ Помоћ",
-    "about.how.ai_desc": "Одговори у духу православља.",
-    "about.disclaimer.title": "Одрицање од одговорности",
-    "about.disclaimer.desc": "Ова апликација је алат, а не духовник.",
-    "about.version": "Православни живот v1.0.0",
 
     "audio.available": "Аудио доступан",
     "audio.listen": "Слушај",

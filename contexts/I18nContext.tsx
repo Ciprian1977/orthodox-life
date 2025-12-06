@@ -31,30 +31,20 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    // User profile update is handled by UserContext usually, 
-    // but this local state ensures immediate UI update
   };
 
   const t = (key: string): string => {
     const dict = translations[language];
     const fallbackDict = translations['en'];
     
-    if (!dict) {
-      console.warn(`Missing dictionary for language: ${language}`);
-      return key;
-    }
+    if (!dict) return key;
 
     const value = dict[key];
     if (value) return value;
 
-    // Fallback to EN
     const fallbackValue = fallbackDict[key];
-    if (fallbackValue) {
-      // console.warn(`Missing translation for key: ${key} in ${language}. Using fallback.`);
-      return fallbackValue;
-    }
+    if (fallbackValue) return fallbackValue;
 
-    console.warn(`Missing translation for key: ${key} in ALL languages.`);
     return key;
   };
 

@@ -247,7 +247,7 @@ const PrayerDetail: React.FC = () => {
         
         {prayer.isPlaceholderOfficial && (
           <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-900/30 p-4 rounded-xl mb-6 text-xs text-orange-800 dark:text-orange-300 text-center font-bold uppercase tracking-wide">
-             {t('prayers.placeholder')}
+             Official Text Placeholder
           </div>
         )}
         

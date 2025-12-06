@@ -88,7 +88,7 @@ export const Today: React.FC = () => {
             {dayInfo.descriptionShort}
           </p>
           <div className="mt-5 flex items-center text-primary text-xs font-bold uppercase tracking-widest group-hover:gap-2 transition-all">
-            <span>{t('btn.details')}</span>
+            <span>Details</span>
             <ChevronRight size={14} className="ml-1" />
           </div>
         </div>

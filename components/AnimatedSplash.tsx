@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { OrthodoxLifeLogo } from './OrthodoxLifeLogo';
 import { useI18n } from '../contexts/I18nContext';
@@ -8,17 +7,21 @@ interface SplashProps {
 }
 
 export const AnimatedSplash: React.FC<SplashProps> = ({ onFinish }) => {
-  const { t } = useI18n();
+  // Safe access to translation with fallback
+  let t: (k: string) => string = (k) => k;
+  try {
+    const i18n = useI18n();
+    t = i18n.t;
+  } catch (e) {
+    t = (k) => (k === 'app.name' ? 'Orthodox Life' : 'Guidance. Prayer. Peace.');
+  }
+
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    // Stage 1: Fade In (0ms)
     const t1 = setTimeout(() => setStage(1), 100);
-    // Stage 2: Pulse/Halo (700ms)
     const t2 = setTimeout(() => setStage(2), 800);
-    // Stage 3: Fade Out (1800ms)
     const t3 = setTimeout(() => setStage(3), 1800);
-    // Finish (2200ms)
     const t4 = setTimeout(onFinish, 2200);
 
     return () => {
@@ -33,7 +36,6 @@ export const AnimatedSplash: React.FC<SplashProps> = ({ onFinish }) => {
     <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg transition-opacity duration-700 ${stage === 3 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
       <div className={`transition-all duration-1000 ease-out transform ${stage >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'} ${stage === 2 ? 'scale-105' : ''}`}>
         <div className="relative">
-           {/* Halo Effect */}
            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary rounded-full blur-[40px] transition-opacity duration-1000 ${stage === 2 ? 'opacity-40' : 'opacity-0'}`}></div>
            <OrthodoxLifeLogo size={80} className="relative z-10 text-primary" />
         </div>

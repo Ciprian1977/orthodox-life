@@ -1,4 +1,5 @@
 
+
 export type Language = 'ro' | 'en' | 'ru' | 'el' | 'sr';
 export type CountryTradition = 'RO' | 'SRB' | 'RU' | 'GR' | 'USA';
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -8,7 +9,7 @@ export interface UserProfile {
   language: Language;
   countryTradition: CountryTradition;
   hasOnboarded: boolean;
-  theme: ThemeMode;
+  theme?: ThemeMode;
   favoritePrayerIds: string[];
   favoriteAudioIds: string[];
   settings: {

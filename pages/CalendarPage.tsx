@@ -138,7 +138,7 @@ const DayDetail: React.FC = () => {
     if (d.fastType === 'strict_fast') return t('today.fast.strict');
     if (d.fastType === 'fast_without_oil') return t('today.fast.no_oil');
     if (d.fastType === 'dairy') return t('today.fast.dairy');
-    return t('today.fast.generic');
+    return 'Fast';
   }
 
   return (
