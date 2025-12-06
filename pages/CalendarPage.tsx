@@ -123,7 +123,7 @@ const DayDetail: React.FC = () => {
 
   useEffect(() => {
     if(date) {
-      getDayInfo(new Date(date), user, user?.countryTradition || 'RO').then(setDay);
+      getDayInfo(new Date(date), user?.countryTradition || 'RO').then(setDay);
     }
   }, [date, user]);
 
@@ -135,7 +135,7 @@ const DayDetail: React.FC = () => {
     if (d.fastType === 'fast_with_oil') return RO_TEXT.today.fast.oil;
     if (d.fastType === 'strict_fast') return RO_TEXT.today.fast.strict;
     if (d.fastType === 'fast_without_oil') return RO_TEXT.today.fast.no_oil;
-    if (d.fastType === 'dairy') return t('today.fast.dairy');
+    if (d.fastType === 'dairy') return RO_TEXT.today.fast.dairy;
     return 'Fast';
   }
 

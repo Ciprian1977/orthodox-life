@@ -232,6 +232,9 @@ const SettingsPage: React.FC = () => {
     
     if (!user) return null;
 
+    const handleRestartOnboarding = () => {
+      setUser({ ...user, hasOnboarded: false });
+    };
     
     return (
        <div className="pb-32 pt-safe p-4 max-w-lg mx-auto bg-bg min-h-screen">
