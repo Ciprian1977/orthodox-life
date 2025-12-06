@@ -88,8 +88,9 @@ function checkViteConfig() {
   
   const content = fs.readFileSync(viteConfigPath, 'utf-8');
   
-  // Check for alias configuration
-  if (content.includes('resolve:') && content.includes('alias')) {
+  // Check for alias configuration with more robust pattern matching
+  const aliasPattern = /resolve\s*:\s*\{[^}]*alias\s*:/;
+  if (aliasPattern.test(content)) {
     console.error('  ❌ Alias configuration found in vite.config.ts. Remove it.');
     return false;
   }

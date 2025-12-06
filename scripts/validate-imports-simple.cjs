@@ -67,14 +67,14 @@ function main() {
   let totalErrors = 0;
   const errorsByFile = {};
   
-  files.forEach(file => {
+  for (const file of files) {
     const errors = checkFile(file);
     if (errors.length > 0) {
       const relativePath = path.relative(rootDir, file);
       errorsByFile[relativePath] = errors;
       totalErrors += errors.length;
     }
-  });
+  }
   
   if (totalErrors === 0) {
     console.log('✅ All imports are valid! No alias imports found.');
