@@ -2,19 +2,18 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Calendar, BookOpen, MessageCircle, MoreHorizontal, Sun } from 'lucide-react';
-import { useI18n } from '../../contexts/I18nContext';
+import { RO_TEXT } from '../../ro-text';
 
 export const ModernBottomNav: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useI18n();
 
   const tabs = [
-    { id: 'today', label: t('tab.today'), icon: Sun, path: '/' },
-    { id: 'calendar', label: t('tab.calendar'), icon: Calendar, path: '/calendar' },
-    { id: 'prayers', label: t('tab.prayers'), icon: BookOpen, path: '/prayers' },
-    { id: 'ai', label: t('tab.ai'), icon: MessageCircle, path: '/ai' },
-    { id: 'more', label: t('tab.more'), icon: MoreHorizontal, path: '/menu' },
+    { id: 'today', label: RO_TEXT.tab.today, icon: Sun, path: '/' },
+    { id: 'calendar', label: RO_TEXT.tab.calendar, icon: Calendar, path: '/calendar' },
+    { id: 'prayers', label: RO_TEXT.tab.prayers, icon: BookOpen, path: '/prayers' },
+    { id: 'ai', label: RO_TEXT.tab.ai, icon: MessageCircle, path: '/ai' },
+    { id: 'more', label: RO_TEXT.tab.more, icon: MoreHorizontal, path: '/menu' },
   ];
 
   return (

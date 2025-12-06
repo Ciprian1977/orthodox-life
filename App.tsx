@@ -3,7 +3,6 @@ import React, { Suspense, lazy, useState } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider, useUser } from './contexts/UserContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { I18nProvider } from './contexts/I18nContext';
 import { ModernBottomNav } from './components/Layout/ModernBottomNav';
 import { AnimatedSplash } from './components/AnimatedSplash';
 import { OrthodoxLifeLogo } from './components/OrthodoxLifeLogo';
@@ -61,9 +60,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <UserProvider>
-        <I18nProvider>
-          <AppContent />
-        </I18nProvider>
+        <AppContent />
       </UserProvider>
     </ThemeProvider>
   );

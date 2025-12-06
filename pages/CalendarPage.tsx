@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../contexts/UserContext';
-import { useI18n } from '../contexts/I18nContext';
+import { RO_TEXT } from '../ro-text';
 import { getCalendarMonth, getDayInfo } from '../services/dataService';
 import { CalendarDay } from '../types';
 import { ChevronLeft, ChevronRight, Calendar as CalIcon, BookOpen, User } from 'lucide-react';
@@ -9,7 +9,6 @@ import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 
 const CalendarGrid: React.FC = () => {
   const { user } = useUser();
-  const { t } = useI18n();
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [days, setDays] = useState<CalendarDay[]>([]);
@@ -31,8 +30,8 @@ const CalendarGrid: React.FC = () => {
   };
 
   const getMonthName = (date: Date) => {
-    const localeMap = { ro: 'ro-RO', en: 'en-US', ru: 'ru-RU', el: 'el-GR', sr: 'sr-Cyrl-RS' };
-    const locale = localeMap[user?.language || 'en'];
+    // Romanian locale
+    const locale = 'ro-RO';
     return date.toLocaleString(locale, { month: 'long', year: 'numeric' });
   };
 
@@ -44,7 +43,7 @@ const CalendarGrid: React.FC = () => {
 
   return (
     <div className="pb-32 pt-safe px-4 max-w-lg mx-auto fade-enter">
-      <h1 className="text-3xl font-serif font-bold text-text mb-6 mt-6">{t('tab.calendar')}</h1>
+      <h1 className="text-3xl font-serif font-bold text-text mb-6 mt-6">{RO_TEXT.tab.calendar}</h1>
       
       <div className="bg-card rounded-[24px] shadow-soft border border-border p-5 transition-colors duration-300">
         {/* Month Navigation */}
@@ -106,11 +105,11 @@ const CalendarGrid: React.FC = () => {
       </div>
 
       <div className="mt-6 space-y-3 text-xs text-text-muted bg-card border border-border p-5 rounded-2xl">
-        <h4 className="font-bold uppercase tracking-widest text-primary mb-2">{t('calendar.legend')}</h4>
-        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-red-500"></div> <span>{t('calendar.legend.major')}</span></div>
-        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-text"></div> <span>{t('calendar.legend.strict')}</span></div>
-        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-blue-500"></div> <span>{t('calendar.legend.fish')}</span></div>
-        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-purple-500"></div> <span>{t('calendar.legend.oil')}</span></div>
+        <h4 className="font-bold uppercase tracking-widest text-primary mb-2">{RO_TEXT.calendar.legend}</h4>
+        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-red-500"></div> <span>{RO_TEXT.calendar.legend_major}</span></div>
+        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-text"></div> <span>{RO_TEXT.calendar.legend_strict}</span></div>
+        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-blue-500"></div> <span>{RO_TEXT.calendar.legend_fish}</span></div>
+        <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-purple-500"></div> <span>{RO_TEXT.calendar.legend_oil}</span></div>
       </div>
     </div>
   );
@@ -120,24 +119,23 @@ const DayDetail: React.FC = () => {
   const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
   const { user } = useUser();
-  const { t } = useI18n();
   const [day, setDay] = useState<CalendarDay | null>(null);
 
   useEffect(() => {
     if(date) {
-      getDayInfo(new Date(date), user?.language || 'en', user?.countryTradition || 'RO').then(setDay);
+      getDayInfo(new Date(date), user?.countryTradition || 'RO').then(setDay);
     }
   }, [date, user]);
 
-  if (!day) return <div className="h-screen flex items-center justify-center text-primary">{t('today.loading')}</div>;
+  if (!day) return <div className="h-screen flex items-center justify-center text-primary">{RO_TEXT.today.loading}</div>;
 
   const getFastLabel = (d: CalendarDay) => {
-    if (!d.isFastDay) return t('today.fast.none');
-    if (d.fastType === 'fast_with_fish') return t('today.fast.fish');
-    if (d.fastType === 'fast_with_oil') return t('today.fast.oil');
-    if (d.fastType === 'strict_fast') return t('today.fast.strict');
-    if (d.fastType === 'fast_without_oil') return t('today.fast.no_oil');
-    if (d.fastType === 'dairy') return t('today.fast.dairy');
+    if (!d.isFastDay) return RO_TEXT.today.fast.none;
+    if (d.fastType === 'fast_with_fish') return RO_TEXT.today.fast.fish;
+    if (d.fastType === 'fast_with_oil') return RO_TEXT.today.fast.oil;
+    if (d.fastType === 'strict_fast') return RO_TEXT.today.fast.strict;
+    if (d.fastType === 'fast_without_oil') return RO_TEXT.today.fast.no_oil;
+    if (d.fastType === 'dairy') return RO_TEXT.today.fast.dairy;
     return 'Fast';
   }
 
@@ -167,7 +165,7 @@ const DayDetail: React.FC = () => {
           {/* Saints List */}
           <div className="bg-card p-6 rounded-[24px] border border-border shadow-soft">
             <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-              <User size={16} /> {t('calendar.saints')}
+              <User size={16} /> {RO_TEXT.calendar.saints}
             </h3>
             <ul className="space-y-3">
               {day.saints.map((s, i) => (
@@ -183,7 +181,7 @@ const DayDetail: React.FC = () => {
           {day.readings && day.readings.length > 0 && (
             <div className="bg-card p-6 rounded-[24px] border border-border shadow-soft">
               <h3 className="text-xs font-bold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-                <BookOpen size={16} /> {t('calendar.readings')}
+                <BookOpen size={16} /> {RO_TEXT.calendar.readings}
               </h3>
               <ul className="space-y-3">
                 {day.readings.map((r, i) => (

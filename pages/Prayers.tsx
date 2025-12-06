@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../contexts/UserContext';
-import { useI18n } from '../contexts/I18nContext';
+import { RO_TEXT } from '../ro-text';
 import { getPrayers, getPrayerById, getAudioItems } from '../services/dataService';
 import { Prayer, PrayerCategory, AudioItem } from '../types';
 import { ArrowLeft, Search, Bookmark, Type, Sparkles, BookOpen, Volume2 } from 'lucide-react';
@@ -12,7 +12,6 @@ const CATEGORIES: PrayerCategory[] = ['morning', 'evening', 'meal', 'communion',
 
 const PrayerList: React.FC = () => {
   const { user } = useUser();
-  const { t } = useI18n();
   const [prayers, setPrayers] = useState<Prayer[]>([]);
   const [search, setSearch] = useState('');
   const [activeCat, setActiveCat] = useState<PrayerCategory | 'all'>('all');
@@ -20,7 +19,7 @@ const PrayerList: React.FC = () => {
   
   useEffect(() => {
     if (user) {
-      getPrayers(user.language, activeCat === 'all' ? undefined : activeCat).then(setPrayers);
+      getPrayers(activeCat === 'all' ? undefined : activeCat).then(setPrayers);
     }
   }, [user, activeCat]);
 
@@ -32,7 +31,7 @@ const PrayerList: React.FC = () => {
 
   return (
     <div className="pb-32 pt-safe px-4 max-w-lg mx-auto fade-enter">
-      <h1 className="text-3xl font-serif font-bold text-text mb-6 mt-6">{t('tab.prayers')}</h1>
+      <h1 className="text-3xl font-serif font-bold text-text mb-6 mt-6">{RO_TEXT.tab.prayers}</h1>
 
       {/* Mode Switcher */}
       <div className="flex p-1 bg-card rounded-2xl border border-border mb-6 shadow-sm">
@@ -41,14 +40,14 @@ const PrayerList: React.FC = () => {
           className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2
             ${mode === 'library' ? 'bg-primary text-white shadow-md' : 'text-text-muted hover:bg-bg'}`}
         >
-          <BookOpen size={16} /> {t('prayers.library')}
+          <BookOpen size={16} /> {RO_TEXT.prayers.library}
         </button>
         <button 
           onClick={() => setMode('ai')}
           className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2
             ${mode === 'ai' ? 'bg-primary text-white shadow-md' : 'text-text-muted hover:bg-bg'}`}
         >
-          <Sparkles size={16} /> {t('prayers.generator')}
+          <Sparkles size={16} /> {RO_TEXT.prayers.generator}
         </button>
       </div>
       
@@ -59,7 +58,7 @@ const PrayerList: React.FC = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-primary" size={18} />
             <input 
               type="text" 
-              placeholder={t('prayers.search')}
+              placeholder={RO_TEXT.prayers.search}
               className="w-full pl-11 pr-4 py-4 rounded-2xl bg-card border border-border focus:outline-none focus:ring-2 focus:ring-primary text-text placeholder:text-accent shadow-soft"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -73,7 +72,7 @@ const PrayerList: React.FC = () => {
               className={`whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors
                 ${activeCat === 'all' ? 'bg-text text-bg' : 'bg-card border border-border text-text-muted'}`}
             >
-              {t('prayers.cat.all')}
+              {RO_TEXT.prayers.cat.all}
             </button>
             {CATEGORIES.map(c => (
               <button 
@@ -117,7 +116,6 @@ const PrayerList: React.FC = () => {
 
 const AIPrayerGenerator: React.FC = () => {
   const { user } = useUser();
-  const { t } = useI18n();
   const [topic, setTopic] = useState('');
   const [situation, setSituation] = useState('');
   const [generatedPrayer, setGeneratedPrayer] = useState('');
@@ -126,7 +124,7 @@ const AIPrayerGenerator: React.FC = () => {
   const handleGenerate = async () => {
     if (!user || (!topic && !situation)) return;
     setLoading(true);
-    const result = await generatePersonalizedPrayer(user.language, user.countryTradition, topic || situation);
+    const result = await generatePersonalizedPrayer(user.countryTradition, topic || situation);
     setGeneratedPrayer(result);
     setLoading(false);
   }
@@ -134,16 +132,16 @@ const AIPrayerGenerator: React.FC = () => {
   return (
     <div className="fade-enter">
       <div className="bg-card p-6 rounded-3xl shadow-soft border border-border mb-6">
-        <h3 className="font-serif font-bold text-xl text-text mb-2">{t('prayers.gen.title')}</h3>
-        <p className="text-sm text-text-muted mb-6">{t('prayers.gen.desc')}</p>
+        <h3 className="font-serif font-bold text-xl text-text mb-2">{RO_TEXT.prayers.gen.title}</h3>
+        <p className="text-sm text-text-muted mb-6">{RO_TEXT.prayers.gen.desc}</p>
 
-        <label className="block text-xs font-bold text-primary uppercase mb-2">{t('prayers.gen.topic')}</label>
+        <label className="block text-xs font-bold text-primary uppercase mb-2">{RO_TEXT.prayers.gen.topic}</label>
         <input 
           className="w-full bg-bg rounded-xl p-4 mb-4 border-none focus:ring-2 focus:ring-primary text-text placeholder-text-muted"
           value={topic} onChange={e => setTopic(e.target.value)}
         />
 
-        <label className="block text-xs font-bold text-primary uppercase mb-2">{t('prayers.gen.details')}</label>
+        <label className="block text-xs font-bold text-primary uppercase mb-2">{RO_TEXT.prayers.gen.details}</label>
         <textarea 
           className="w-full bg-bg rounded-xl p-4 mb-6 border-none focus:ring-2 focus:ring-primary text-text placeholder-text-muted h-24 resize-none"
           value={situation} onChange={e => setSituation(e.target.value)}
@@ -154,13 +152,13 @@ const AIPrayerGenerator: React.FC = () => {
           disabled={loading}
           className="w-full bg-text text-bg py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all active-press"
         >
-          {loading ? t('prayers.gen.writing') : <><Sparkles size={18} /> {t('prayers.gen.btn')}</>}
+          {loading ? RO_TEXT.prayers.gen.writing : <><Sparkles size={18} /> {RO_TEXT.prayers.gen.btn}</>}
         </button>
       </div>
 
       {generatedPrayer && (
         <div className="bg-card p-6 rounded-3xl shadow-soft border border-border animate-in fade-in duration-500">
-           <h3 className="font-serif font-bold text-lg text-text mb-4 text-center">{t('prayers.gen.result')}</h3>
+           <h3 className="font-serif font-bold text-lg text-text mb-4 text-center">{RO_TEXT.prayers.gen.result}</h3>
            <div className="font-serif text-lg leading-relaxed text-text whitespace-pre-wrap">
              {generatedPrayer}
            </div>
@@ -174,7 +172,6 @@ const PrayerDetail: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, toggleFavoritePrayer } = useUser();
-  const { t } = useI18n();
   const [prayer, setPrayer] = useState<Prayer | null>(null);
   const [audio, setAudio] = useState<AudioItem | null>(null);
   const [fontSize, setFontSize] = useState(20);
@@ -194,7 +191,7 @@ const PrayerDetail: React.FC = () => {
     }
   }, [id]);
 
-  if (!prayer) return <div className="p-8 text-center text-primary">{t('today.loading')}</div>;
+  if (!prayer) return <div className="p-8 text-center text-primary">{RO_TEXT.today.loading}</div>;
   
   const isFav = user?.favoritePrayerIds.includes(prayer.id);
 
@@ -239,8 +236,8 @@ const PrayerDetail: React.FC = () => {
                <Volume2 size={20} />
              </div>
              <div>
-               <p className="text-xs text-primary font-bold uppercase tracking-wider">{t('audio.listen')}</p>
-               <p className="text-sm font-bold text-text">{t('audio.available')}</p>
+               <p className="text-xs text-primary font-bold uppercase tracking-wider">{RO_TEXT.audio.listen}</p>
+               <p className="text-sm font-bold text-text">{RO_TEXT.audio.available}</p>
              </div>
           </div>
         )}

@@ -1,12 +1,10 @@
 
 
-export type Language = 'ro' | 'en' | 'ru' | 'el' | 'sr';
 export type CountryTradition = 'RO' | 'SRB' | 'RU' | 'GR' | 'USA';
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface UserProfile {
   id?: string;
-  language: Language;
   countryTradition: CountryTradition;
   hasOnboarded: boolean;
   theme?: ThemeMode;
@@ -50,7 +48,6 @@ export interface Prayer {
   id: string;
   title: string;
   text: string; // HTML or clean text
-  language: Language;
   tradition?: CountryTradition; // Optional, null if generic
   category: PrayerCategory;
   tags: string[];
@@ -64,7 +61,6 @@ export interface Article {
   id: string;
   title: string;
   body: string; // HTML allowed
-  language: Language;
   category: ArticleCategory;
   readingTimeMinutes: number;
   author?: string;
@@ -76,7 +72,6 @@ export interface AudioItem {
   id: string;
   title: string;
   description: string;
-  language: Language;
   category: AudioCategory;
   durationSeconds: number;
   url: string; // Remote URL
@@ -85,7 +80,5 @@ export interface AudioItem {
 }
 
 export interface TranslationDictionary {
-  [key: string]: {
-    [lang in Language]?: string;
-  };
+  [key: string]: string;
 }
