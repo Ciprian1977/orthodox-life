@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate:imports": "node scripts/validate-imports-simple.cjs",
+    "validate:deployment": "node scripts/check-deployment.cjs",
+    "validate:security": "node scripts/check-security.cjs",
+    "validate:all": "npm run validate:imports && npm run validate:security && npm run validate:deployment",
+    "precommit": "node scripts/pre-commit.cjs"
   },
   "dependencies": {
     "react-router-dom": "^7.9.6",
